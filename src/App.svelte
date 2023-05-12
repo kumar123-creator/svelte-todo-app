@@ -1,59 +1,27 @@
 <script>
-  import { afterUpdate } from 'svelte';
-
-  afterUpdate(() => {
-    document.querySelector('.js-todo-input').focus();
-  });
-
-  let todoItems = [];
-  let newTodo = '';
-
-  function addTodo() {
-    newTodo = newTodo.trim();
-    if (!newTodo) return;
-
-    const todo = {
-      text: newTodo,
-      checked: false,
-      id: Date.now(),
-    };
-
-    todoItems = [...todoItems, todo];
-    newTodo = '';
-  }
-
-  function toggleDone(id) {
-    const index = todoItems.findIndex(item => item.id === Number(id));
-    todoItems[index].checked = !todoItems[index].checked;
-  }
-
-  function deleteTodo(id) {
-    todoItems = todoItems.filter(item => item.id !== Number(id));
-  }
-</script>
-
-<main>
-  <div class="container">
-    <h1 class="app-title">todos</h1>
-    <ul class="todo-list">
-      {#each todoItems as todo (todo.id)}
-        <li class="todo-item {todo.checked ? 'done' : ''}">
-          <input id={todo.id} type="checkbox" />
-          <label for={todo.id} class="tick" on:click={() => toggleDone(todo.id)}></label>
-          <span>{todo.text}</span>
-          <button class="delete-todo" on:click={() => deleteTodo(todo.id)}>
-            <svg><use href="#delete-icon"></use></svg>
-          </button>
-        </li>
-      {/each}
-    </ul>
-    <div class="empty-state">
-      <svg class="checklist-icon"><use href="#checklist-icon"></use></svg>
-      <h2 class="empty-state__title">Add your first todo</h2>
-      <p class="empty-state__description">What do you want to get done today?</p>
-    </div>
-    <form on:submit|preventDefault={addTodo}>
-      <input class="js-todo-input" type="text" aria-label="Enter a new todo item" placeholder="E.g. Build a web app" bind:value={newTodo}>
-    </form>
-  </div>
-</main>
+	import Grid from "gridjs-svelte";
+  
+	const data = [
+		['Mumbai Indians', 8, 6, 2, 0, 0, 12, 0.494],
+    ['Chennai Super Kings', 7, 5, 2, 0, 0, 10, 1.263],
+    ['Royal Challengers Bangalore', 7, 5, 2, 0, 0, 10, -0.171],
+    ['Delhi Capitals', 8, 4, 4, 0, 0, 8, -0.055],
+    ['Punjab Kings', 8, 4, 4, 0, 0, 8, -0.368],
+    ['Kolkata Knight Riders', 7, 2, 5, 0, 0, 4, -0.494],
+    ['Rajasthan Royals', 7, 2, 5, 0, 0, 4, -0.69],
+    ['Sunrisers Hyderabad', 7, 1, 6, 0, 0, 2, -0.623],
+  ];
+  
+	const columns = [];
+  
+  </script>
+  
+  <Grid data={data} 
+  sort 
+  search 
+  pagination={{ enabled: true, limit: 3 }} columns={columns} />
+ 
+  
+  <style global>
+	@import "https://cdn.jsdelivr.net/npm/gridjs/dist/theme/mermaid.min.css";
+  </style>
